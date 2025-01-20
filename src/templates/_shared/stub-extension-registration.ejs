@@ -1,0 +1,44 @@
+/*
+ * <license header>
+ */
+
+import React from 'react';
+import { Text } from '@adobe/react-spectrum';
+import { register } from '@adobe/uix-guest';
+import { extensionId } from './Constants';
+
+function ExtensionRegistration() {
+  const init = async () => {
+    const guestConnection = await register({
+      id: extensionId,
+      methods: {
+        actionBar: {
+          getActions() {
+            // YOUR ACTION BAR ACTIONS CODE SHOULD BE HERE
+            return [
+              <%_ if (extensionManifest.actionBarActions) { -%>
+                <%_ extensionManifest.actionBarActions.forEach((action) => { -%>
+              {
+                'id': '<%- action.id %>',
+                'icon': '<%- action.icon %>',
+                'label': '<%- action.label %>',
+                'disabled': false,
+                'onClick': async () => {
+                },
+              },
+              <%_ })} -%>
+            ];
+          },
+          getDisabledBuiltInActions() {
+            return [];
+          },
+        },
+      },
+    });
+  };
+  init().catch(console.error);
+
+  return <Text>IFrame for integration with Host (AEM Assets View)...</Text>;
+}
+
+export default ExtensionRegistration;
