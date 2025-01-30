@@ -13,7 +13,7 @@ function ExtensionRegistration() {
       id: extensionId,
       methods: {
         actionBar: {
-          getActions() {
+          async getActions({ context, resourceSelection }) {
             // YOUR ACTION BAR ACTIONS CODE SHOULD BE HERE
             return [
               <%_ if (extensionManifest.actionBarActions) { -%>
@@ -22,15 +22,14 @@ function ExtensionRegistration() {
                 'id': '<%- action.id %>',
                 'icon': '<%- action.icon %>',
                 'label': '<%- action.label %>',
-                'disabled': false,
                 'onClick': async () => {
                 },
               },
               <%_ })} -%>
             ];
           },
-          getDisabledBuiltInActions() {
-            return [];
+          async isBuiltInActionHidden({ actionId, context, resourceSelection }) {
+            return false;
           },
         },
       },
