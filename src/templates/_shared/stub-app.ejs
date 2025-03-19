@@ -6,6 +6,12 @@ import React from 'react';
 import ErrorBoundary from 'react-error-boundary';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import ExtensionRegistration from './ExtensionRegistration';
+<%_ const actionBarActions = extensionManifest.actionBarActions || [] -%>
+<%_ actionBarActions.forEach((action) => { -%>
+  <%_ if (action.needsModal) { -%>
+import <%- action.componentName %> from './<%- action.componentName %>';
+  <%_ } -%>
+<%_ }) -%>
 
 function App() {
   return (
@@ -14,6 +20,12 @@ function App() {
         <Routes>
           <Route index element={<ExtensionRegistration />} />
           <Route exact path="index.html" element={<ExtensionRegistration />} />
+          <%_ if (extensionManifest.actionBarActions) { -%>
+            <%_ extensionManifest.actionBarActions.forEach((action) => { -%>
+              <%_ if (action.needsModal) { -%>
+          <Route path="modal-<%- action.id %>" element={<<%- action.componentName %> />} />
+              <%_ } -%>
+          <%_ })} -%>
           // YOUR CUSTOM ROUTES SHOULD BE HERE
         </Routes>
       </ErrorBoundary>

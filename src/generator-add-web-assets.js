@@ -51,6 +51,9 @@ class ExtensionWebAssetsGenerator extends Generator {
         // Generate ExtensionRegistration.js
         this._generateExtensionRegistration();
 
+        // Generate React component files for custom buttons that needs to show a modal
+        this._generateModalFiles('actionBar');
+
         // add .babelrc
         /// NOTE this is a global file and might conflict
         this.fs.writeJSON(this.destinationPath('.babelrc'), {
@@ -108,6 +111,33 @@ class ExtensionWebAssetsGenerator extends Generator {
             this.destinationPath(path.join(this.destFolder, `./src/components/ExtensionRegistration.js`)),
             this.props
         );
+    }
+
+    /**
+     * Generate files for modal dialog with respect to extension area
+     * @param extensionArea - extension area, e.g. actionBar or headerMenu
+     * @private
+     */
+    _generateModalFiles(extensionArea) {
+        // Generic Project
+        var relativeTemplatePath = './templates/_shared/stub-modal.ejs';
+        var customActions = [];
+
+        if (extensionArea === 'actionBar') {
+            customActions = this.props.extensionManifest.actionBarActions || [];
+        }
+
+        customActions.forEach((action) => {
+            if (action.needsModal) {
+                const modalComponentName = action.componentName;
+                this.fs.copyTpl(
+                    this.templatePath(relativeTemplatePath),
+                    this.destinationPath(path.join(this.destFolder, `./src/components/${modalComponentName}.js`)), {
+                        ModalComponentName: modalComponentName
+                    }
+                );
+            }
+        })
     }
 }
 

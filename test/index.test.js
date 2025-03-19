@@ -38,9 +38,9 @@ describe('prototype', () => {
 });
 
 describe('run', () => {
-  const srcFolder = 'src/aem-assets-browse-1'
-  const configName = 'aem/assets/browse/1'
-  const extConfig = 'ext.config.yaml'
+  const srcFolder = 'src/aem-assets-browse-1';
+  const configName = 'aem/assets/browse/1';
+  const extConfig = 'ext.config.yaml';
 
   test('test a generator invocation with default code generation', async () => {
     const options = {

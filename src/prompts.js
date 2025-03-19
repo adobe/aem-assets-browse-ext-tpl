@@ -140,10 +140,32 @@ const promptMainMenu = (manifest) => {
 
 // Prompts for ActionBar metadata
 const nestedActionBarPrompts = (manifest, manifestNodeName) => {
-    const questions = [labelPrompt(), iconPrompt()];
+    // First prompt for basic info
+    const basicQuestions = [labelPrompt(), iconPrompt(), modalPrompt()];
 
     return inquirer
-        .prompt(questions)
+        .prompt(basicQuestions)
+        .then((basicAnswers) => {
+            // If modal is needed, prompt for modal details
+            if (basicAnswers.needsModal) {
+                // First get title and type
+                const mandatoryModalQuestions = [
+                    modalTitlePrompt(),
+                    modalTypePrompt()
+                ];
+
+                return inquirer.prompt(mandatoryModalQuestions).then(mandatoryModalAnswers => {
+                    // Only prompt for size if type is 'modal'
+                    if (mandatoryModalAnswers.modalType === 'modal') {
+                        return inquirer.prompt(modalSizePrompt()).then(sizeAnswer => {
+                            return {...basicAnswers, ...mandatoryModalAnswers, ...sizeAnswer};
+                        });
+                    }
+                    return {...basicAnswers, ...mandatoryModalAnswers};
+                });
+            }
+            return basicAnswers;
+        })
         .then((answers) => {
             answers.id = slugify(answers.label, {
                 replacement: '-',  // replace spaces with replacement character, defaults to `-`
@@ -153,6 +175,11 @@ const nestedActionBarPrompts = (manifest, manifestNodeName) => {
                 locale: 'vi',      // language code of the locale to use
                 trim: true         // trim leading and trailing replacement chars, defaults to `true`
             });
+            if (answers.needsModal) {
+                answers.componentName = 'Modal' + answers.id.split('-')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join('');
+            }
             manifest[manifestNodeName] = manifest[manifestNodeName] || [];
             manifest[manifestNodeName].push(answers);
         })
@@ -306,6 +333,51 @@ const iconPrompt = () => {
     };
 }
 
+const modalPrompt = () => {
+    return {
+        type: 'confirm',
+        name: 'needsModal',
+        message: "Do you need to show a modal for the button?",
+        default: false
+    };
+}
+
+const modalTitlePrompt = () => {
+    return {
+        type: 'input',
+        name: 'modalTitle',
+        message: 'Please provide the title for the modal:',
+        validate(answer) {
+            if (!answer.length) {
+                return 'Required.';
+            }
+
+            return true;
+        },
+    };
+}
+
+const modalTypePrompt = () => {
+    return {
+        type: 'list',
+        name: 'modalType',
+        message: 'Please select the type for the modal:',
+        default: 'modal',
+        choices: [
+            'modal',
+            'fullScreen'
+        ],
+    };
+}
+
+const modalSizePrompt = () => {
+    return {
+        type: 'list',
+        name: 'modalSize',
+        message: 'Please select the size for the modal:',
+        choices: ['S', 'M', 'L']
+    };
+}
 // Prompts for action metadata
 const nestedActionPrompts = (manifest, manifestNodeName) => {
     let actionName = 'generic';
@@ -356,7 +428,7 @@ const promptGuideMenu = (manifest) => {
         {
             name: "Go back",
             value: () => {
-                return Promise.resolve(true)
+                return Promise.resolve(true);
             }
         }
     );
@@ -389,5 +461,6 @@ module.exports = {
     briefOverviews,
     promptTopLevelFields,
     promptMainMenu,
+    nestedActionBarPrompts,
     promptDocs
 };

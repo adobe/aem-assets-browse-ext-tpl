@@ -13,7 +13,7 @@ const path = require('path');
 const { stdout, stderr } = require('stdout-stderr');
 
 process.on('unhandledRejection', error => {
-  throw error
+  throw error;
 });
 
 // trap console log

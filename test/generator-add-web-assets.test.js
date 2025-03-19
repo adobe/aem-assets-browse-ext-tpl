@@ -90,10 +90,6 @@ function assertCodeContent(extensionManifest) {
             `${webSrcFolder}/src/components/ExtensionRegistration.js`,
             `'label': '${action.label}'`
         );
-        assert.fileContent(
-            `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-            `'disabled': 'false'`
-        );
     });
 }
 

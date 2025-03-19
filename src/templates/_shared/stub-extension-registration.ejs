@@ -23,6 +23,18 @@ function ExtensionRegistration() {
                 'icon': '<%- action.icon %>',
                 'label': '<%- action.label %>',
                 'onClick': async () => {
+                <%_ if (action.needsModal) { -%>
+                  // openDialog: ({ title, contentUrl, type, size, payload }) => {},
+                  guestConnection.host.modal.openDialog({
+                    title: '<%- action.modalTitle %>',
+                    contentUrl: '/#modal-<%- action.id %>',
+                    type: '<%- action.modalType %>',
+                    size: '<%- action.modalSize %>',
+                    payload: { /* arbitrary payload */ }
+                  });
+                <%_ } else { -%>
+                  console.log('Action.id: ', '<%- action.id %>');
+                <%_ } -%>
                 },
               },
               <%_ })} -%>
