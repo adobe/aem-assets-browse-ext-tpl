@@ -75,6 +75,11 @@ function assertCodeContent(extensionManifest) {
         '<script src="./src/index.js"'
     );
 
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async getHiddenBuiltInActions({ context, resourceSelection }) {'
+    );
+
     const actionBarActions = extensionManifest.actionBarActions || [];
 
     actionBarActions.forEach((action) => {

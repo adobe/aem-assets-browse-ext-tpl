@@ -40,8 +40,8 @@ function ExtensionRegistration() {
               <%_ })} -%>
             ];
           },
-          async isBuiltInActionHidden({ actionId, context, resourceSelection }) {
-            return false;
+          async getHiddenBuiltInActions({ context, resourceSelection }) {
+            return [];
           },
         },
       },
