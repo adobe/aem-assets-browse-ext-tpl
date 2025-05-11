@@ -43,6 +43,25 @@ function ExtensionRegistration() {
           async getHiddenBuiltInActions({ context, resourceSelection }) {
             return [];
           },
+          async overrideBuiltInAction({ actionId, context, resourceSelection }) {
+            // perform some custom tasks
+            // override built-in action by return true;
+            //return true;
+            // or return false to continue with built-in action
+            return false;
+          },
+        },
+        quickActions: {
+          async getHiddenBuiltInActions({ context, resourceSelection }) {
+            return [];
+          },
+          async overrideBuiltInAction({ actionId, context, resourceSelection }) {
+            // perform some custom tasks
+            // override built-in action by return true;
+            //return true;
+            // or return false to continue with built-in action
+            return false;
+          },
         },
       },
     });
