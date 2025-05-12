@@ -80,6 +80,11 @@ function assertCodeContent(extensionManifest) {
         'async getHiddenBuiltInActions({ context, resourceSelection }) {'
     );
 
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async overrideBuiltInAction({ actionId, context, resourceSelection }) {'
+    );
+
     const actionBarActions = extensionManifest.actionBarActions || [];
 
     actionBarActions.forEach((action) => {
