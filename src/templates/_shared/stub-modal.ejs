@@ -37,12 +37,16 @@ export default function <%- ModalComponentName %>() {
   }
 
   return (
+<% if (ModalType === 'fullScreen') { %>
   <Provider theme={defaultTheme} colorScheme={colorScheme} height={'100vh'}>
+<% } else { %>
+  <Provider theme={defaultTheme} colorScheme={colorScheme}>
+<% } %>
     <View>
-      <View>
+      <View paddingBottom="size-300">
         <Text>Please visit <Link href="https://developer.adobe.com/uix/docs/">UI Extensibility documentation</Link> to get started.</Text>
 
-        <Flex justifyContent="center" marginTop="size-400">
+        <Flex justifyContent="center" paddingBottom="size-300">
           <ButtonGroup>
             <Button variant="primary" onPress={() => closeDialog()}>Close</Button>
           </ButtonGroup>
