@@ -85,6 +85,16 @@ function assertCodeContent(extensionManifest) {
         'async overrideBuiltInAction({ actionId, context, resourceSelection }) {'
     );
 
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'actionBar: {'
+    );
+
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'quickActions: {'
+    );
+
     const actionBarActions = extensionManifest.actionBarActions || [];
 
     actionBarActions.forEach((action) => {
