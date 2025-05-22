@@ -134,8 +134,8 @@ class ExtensionWebAssetsGenerator extends Generator {
                 this.fs.copyTpl(
                     this.templatePath(relativeTemplatePath),
                     this.destinationPath(path.join(this.destFolder, `./src/components/${modalComponentName}.js`)), {
-                        ModalComponentName: modalComponentName,
-                        ModalType: modalType,
+                        modalComponentName: modalComponentName,
+                        modalType: modalType,
                     }
                 );
             }

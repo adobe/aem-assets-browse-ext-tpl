@@ -17,7 +17,7 @@ import {
 
 import { extensionId } from './Constants';
 
-export default function <%- ModalComponentName %>() {
+export default function <%- modalComponentName %>() {
   // Fields
   const [guestConnection, setGuestConnection] = useState();
   const [colorScheme, setColorScheme] = useState('light');
@@ -37,7 +37,7 @@ export default function <%- ModalComponentName %>() {
   }
 
   return (
-<% if (ModalType === 'fullScreen') { %>
+<% if (modalType === 'fullScreen') { %>
   <Provider theme={defaultTheme} colorScheme={colorScheme} height={'100vh'}>
 <% } else { %>
   <Provider theme={defaultTheme} colorScheme={colorScheme}>
