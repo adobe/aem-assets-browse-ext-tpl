@@ -130,10 +130,12 @@ class ExtensionWebAssetsGenerator extends Generator {
         customActions.forEach((action) => {
             if (action.needsModal) {
                 const modalComponentName = action.componentName;
+                const modalType = action.modalType;
                 this.fs.copyTpl(
                     this.templatePath(relativeTemplatePath),
                     this.destinationPath(path.join(this.destFolder, `./src/components/${modalComponentName}.js`)), {
-                        ModalComponentName: modalComponentName
+                        modalComponentName: modalComponentName,
+                        modalType: modalType,
                     }
                 );
             }

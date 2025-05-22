@@ -75,9 +75,39 @@ function assertCodeContent(extensionManifest) {
         '<script src="./src/index.js"'
     );
 
+    // for actionBarActions
     assert.fileContent(
         `${webSrcFolder}/src/components/ExtensionRegistration.js`,
         'async getHiddenBuiltInActions({ context, resourceSelection }) {'
+    );
+
+    // for actionBarActions
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async overrideBuiltInAction({ actionId, context, resourceSelection }) {'
+    );
+
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'actionBar: {'
+    );
+
+    // for quickActions
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async getHiddenBuiltInActions({ context, resource }) {'
+    );
+
+    // for quickActions
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async overrideBuiltInAction({ actionId, context, resource }) {'
+    );
+
+
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'quickActions: {'
     );
 
     const actionBarActions = extensionManifest.actionBarActions || [];
