@@ -160,13 +160,13 @@ describe('prompts', () => {
             ]);
         });
 
-        it('should prompt the action bar button and expected the basic + modal prompts with fullScreen modal', async () => {
+        it('should prompt the action bar button and expected the basic + modal prompts with fullscreen modal', async () => {
             const mockManifest = {};
             const mockAnswers = {
                 label: 'Custom Action',
                 icon: 'ABC',
                 needsModal: true,
-                modalType: 'fullScreen',
+                modalType: 'fullscreen',
             };
 
             inquirer.prompt.mockResolvedValue(mockAnswers);
@@ -212,7 +212,7 @@ describe('prompts', () => {
                         default: 'modal',
                         "choices": [
                             "modal",
-                            "fullScreen",
+                            "fullscreen",
                         ],
                     }
                 ),
@@ -272,7 +272,7 @@ describe('prompts', () => {
                         default: 'modal',
                         "choices": [
                             "modal",
-                            "fullScreen",
+                            "fullscreen",
                         ],
                     }
                 ),

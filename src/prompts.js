@@ -365,7 +365,7 @@ const modalTypePrompt = () => {
         default: 'modal',
         choices: [
             'modal',
-            'fullScreen'
+            'fullscreen'
         ],
     };
 }
