@@ -51,7 +51,7 @@ class ExtensionWebAssetsGenerator extends Generator {
         // Generate ExtensionRegistration.js
         this._generateExtensionRegistration();
 
-        // Generate React component files for custom buttons that needs to show a modal
+        // Generate React component files for custom actions that needs to show a modal
         this._generateModalFiles('actionBar');
 
         // add .babelrc

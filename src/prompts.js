@@ -337,7 +337,7 @@ const modalPrompt = () => {
     return {
         type: 'confirm',
         name: 'needsModal',
-        message: "Do you need to show a modal for the button?",
+        message: "Do you need to show a modal for the action?",
         default: false
     };
 }

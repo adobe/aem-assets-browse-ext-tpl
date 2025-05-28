@@ -124,7 +124,7 @@ describe('prompts', () => {
     });
 
     describe('promptNestedActionBarPrompts', () => {
-        it('should prompt the action bar button and expected the basic prompts', async () => {
+        it('should prompt the action bar action and expected the basic prompts', async () => {
             const mockManifest = {};
             const mockAnswers = {
                 label: 'Custom Action',
@@ -154,13 +154,13 @@ describe('prompts', () => {
                 expect.objectContaining({
                     type: 'confirm',
                     name: 'needsModal',
-                    message: 'Do you need to show a modal for the button?',
+                    message: 'Do you need to show a modal for the action?',
                     default: false,
                 }),
             ]);
         });
 
-        it('should prompt the action bar button and expected the basic + modal prompts with fullscreen modal', async () => {
+        it('should prompt the action bar action and expected the basic + modal prompts with fullscreen modal', async () => {
             const mockManifest = {};
             const mockAnswers = {
                 label: 'Custom Action',
@@ -191,7 +191,7 @@ describe('prompts', () => {
                 expect.objectContaining({
                     type: 'confirm',
                     name: 'needsModal',
-                    message: 'Do you need to show a modal for the button?',
+                    message: 'Do you need to show a modal for the action?',
                     default: false,
                 }),
             ]);
@@ -219,7 +219,7 @@ describe('prompts', () => {
             ]);
         });
 
-        it('should prompt the action bar button and expected the basic + modal prompts', async () => {
+        it('should prompt the action bar action and expected the basic + modal prompts', async () => {
             const mockManifest = {};
             const mockAnswers = {
                 label: 'Custom Action',
@@ -251,7 +251,7 @@ describe('prompts', () => {
                 expect.objectContaining({
                     type: 'confirm',
                     name: 'needsModal',
-                    message: 'Do you need to show a modal for the button?',
+                    message: 'Do you need to show a modal for the action?',
                     default: false,
                 }),
             ]);
