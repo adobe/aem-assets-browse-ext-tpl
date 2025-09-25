@@ -12,6 +12,12 @@ import ExtensionRegistration from './ExtensionRegistration';
 import <%- action.componentName %> from './<%- action.componentName %>';
   <%_ } -%>
 <%_ }) -%>
+<%_ const headerMenuActions = extensionManifest.headerMenuActions || [] -%>
+<%_ headerMenuActions.forEach((action) => { -%>
+  <%_ if (action.needsModal) { -%>
+import <%- action.componentName %> from './<%- action.componentName %>';
+  <%_ } -%>
+<%_ }) -%>
 
 function App() {
   return (
@@ -22,6 +28,12 @@ function App() {
           <Route exact path="index.html" element={<ExtensionRegistration />} />
           <%_ if (extensionManifest.actionBarActions) { -%>
             <%_ extensionManifest.actionBarActions.forEach((action) => { -%>
+              <%_ if (action.needsModal) { -%>
+          <Route path="modal-<%- action.id %>" element={<<%- action.componentName %> />} />
+              <%_ } -%>
+          <%_ })} -%>
+          <%_ if (extensionManifest.headerMenuActions) { -%>
+            <%_ extensionManifest.headerMenuActions.forEach((action) => { -%>
               <%_ if (action.needsModal) { -%>
           <Route path="modal-<%- action.id %>" element={<<%- action.componentName %> />} />
               <%_ } -%>

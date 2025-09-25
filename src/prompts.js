@@ -104,6 +104,10 @@ const promptMainMenu = (manifest) => {
             value: nestedActionBarPrompts.bind(this, manifest, 'actionBarActions'),
         },
         {
+            name: 'Add a button to the header menu',
+            value: nestedHeaderMenuPrompts.bind(this, manifest, 'headerMenuActions'),
+        },
+        {
             name: 'Add server-side handler',
             value: nestedActionPrompts.bind(this, manifest, 'runtimeActions')
         },
@@ -188,12 +192,62 @@ const nestedActionBarPrompts = (manifest, manifestNodeName) => {
         })
 }
 
+// Prompts for Header Menu metadata
+const nestedHeaderMenuPrompts = (manifest, manifestNodeName) => {
+    // First prompt for basic info
+    const basicQuestions = [labelPrompt('Header Menu button'), iconPrompt(), modalPrompt()];
+
+    return inquirer
+        .prompt(basicQuestions)
+        .then((basicAnswers) => {
+            // If modal is needed, prompt for modal details
+            if (basicAnswers.needsModal) {
+                // First get title and type
+                const mandatoryModalQuestions = [
+                    modalTitlePrompt(),
+                    modalTypePrompt()
+                ];
+
+                return inquirer.prompt(mandatoryModalQuestions).then(mandatoryModalAnswers => {
+                    // Only prompt for size if type is 'modal'
+                    if (mandatoryModalAnswers.modalType === 'modal') {
+                        return inquirer.prompt(modalSizePrompt()).then(sizeAnswer => {
+                            return {...basicAnswers, ...mandatoryModalAnswers, ...sizeAnswer};
+                        });
+                    }
+                    return {...basicAnswers, ...mandatoryModalAnswers};
+                });
+            }
+            return basicAnswers;
+        })
+        .then((answers) => {
+            answers.id = slugify(answers.label, {
+                replacement: '-',  // replace spaces with replacement character, defaults to `-`
+                remove: undefined, // remove characters that match regex, defaults to `undefined`
+                lower: true,       // convert to lower case, defaults to `false`
+                strict: true,      // strip special characters except replacement, defaults to `false`
+                locale: 'vi',      // language code of the locale to use
+                trim: true         // trim leading and trailing replacement chars, defaults to `true`
+            });
+            if (answers.needsModal) {
+                answers.componentName = 'Modal' + answers.id.split('-')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join('');
+            }
+            manifest[manifestNodeName] = manifest[manifestNodeName] || [];
+            manifest[manifestNodeName].push(answers);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+}
+
 // Helper prompts for ActionBar action metadata
-const labelPrompt = () => {
+const labelPrompt = (uiString = 'ActionBar action') => {
     return {
         type: 'input',
         name: 'label',
-        message: 'Please provide label for the ActionBar action:',
+        message: `Please provide label for the ${uiString}:`,
         validate(answer) {
             if (!answer.length) {
                 return 'Required.';
@@ -318,11 +372,11 @@ const workflowIcons = [
     'WebPage', 'WebPages', 'Workflow', 'WorkflowAdd', 'Wrench', 'ZoomIn', 'ZoomOut'
 ];
 
-const iconPrompt = () => {
+const iconPrompt = (uiString = 'ActionBar action') => {
     return {
         type: 'autocomplete',
         name: 'icon',
-        message: 'Please select React Spectrum icon for the ActionBar action:',
+        message: `Please select React Spectrum icon for the ${uiString}:`,
         source: (answersSoFar, input) => {
             if (input) {
                 return Promise.resolve(workflowIcons.filter(icon => icon.toLowerCase().includes(input.toLowerCase())));
@@ -462,5 +516,6 @@ module.exports = {
     promptTopLevelFields,
     promptMainMenu,
     nestedActionBarPrompts,
+    nestedHeaderMenuPrompts,
     promptDocs
 };

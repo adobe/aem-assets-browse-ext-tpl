@@ -66,13 +66,30 @@ function ExtensionRegistration() {
         headerMenu: {
           async getButtons({ context, resourceSelection }) {
             // YOUR HEADER MENU BUTTONS SHOULD BE RETURNED IN THE ARRAY
-            // return an empty array if you don't want to show any extra buttons
-            // return an array of objects with the following properties:
-            // - id: string
-            // - icon: string
-            // - label: string
-            // - onClick: function
-            return [];
+            return [
+              <%_ if (extensionManifest.headerMenuActions) { -%>
+                <%_ extensionManifest.headerMenuActions.forEach((action) => { -%>
+              {
+                'id': '<%- action.id %>',
+                'icon': '<%- action.icon %>',
+                'label': '<%- action.label %>',
+                'onClick': async () => {
+                <%_ if (action.needsModal) { -%>
+                  // openDialog: ({ title, contentUrl, type, size, payload }) => {},
+                  guestConnection.host.modal.openDialog({
+                    title: '<%- action.modalTitle %>',
+                    contentUrl: '/#modal-<%- action.id %>',
+                    type: '<%- action.modalType %>',
+                    size: '<%- action.modalSize %>',
+                    payload: { /* arbitrary payload */ }
+                  });
+                <%_ } else { -%>
+                  console.log('Header Menu Action.id: ', '<%- action.id %>');
+                <%_ } -%>
+                },
+              },
+              <%_ })} -%>
+            ];
           },
         },
       },

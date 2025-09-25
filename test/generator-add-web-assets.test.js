@@ -138,6 +138,31 @@ function assertCodeContent(extensionManifest) {
             `'label': '${action.label}'`
         );
     });
+
+    const headerMenuActions = extensionManifest.headerMenuActions || [];
+
+    headerMenuActions.forEach((action) => {
+        assert.fileContent(
+            `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+            `'id': '${action.id}'`
+        );
+        assert.fileContent(
+            `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+            `'icon': '${action.icon}'`
+        );
+        assert.fileContent(
+            `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+            `'label': '${action.label}'`
+        );
+        
+        // Verify modal routes are generated in App.js if action needs modal
+        if (action.needsModal) {
+            assert.fileContent(
+                `${webSrcFolder}/src/components/App.js`,
+                `<Route path="modal-${action.id}" element={<${action.componentName} />} />`
+            );
+        }
+    });
 }
 
 describe('run', () => {
