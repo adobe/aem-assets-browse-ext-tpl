@@ -110,6 +110,18 @@ function assertCodeContent(extensionManifest) {
         'quickActions: {'
     );
 
+    // for headerMenu
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'headerMenu: {'
+    );
+
+    // for headerMenu
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async getButtons({ context, resourceSelection }) {'
+    );
+
     const actionBarActions = extensionManifest.actionBarActions || [];
 
     actionBarActions.forEach((action) => {
