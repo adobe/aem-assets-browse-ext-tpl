@@ -16,6 +16,33 @@ const chalk = require('chalk');
 
 inquirer.registerPrompt('autocomplete', autocompletePrompt);
 
+// Shared slugify configuration
+const SLUGIFY_CONFIG = {
+    replacement: '-',  // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true,       // convert to lower case, defaults to `false`
+    strict: true,      // strip special characters except replacement, defaults to `false`
+    locale: 'vi',      // language code of the locale to use
+    trim: true         // trim leading and trailing replacement chars, defaults to `true`
+};
+
+// Helper function to generate component name from id
+const generateComponentName = (id) => {
+    return 'Modal' + id.split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+};
+
+// Helper function to process answers with common logic
+const processAnswers = (answers, manifest, manifestNodeName) => {
+    answers.id = slugify(answers.label, SLUGIFY_CONFIG);
+    if (answers.needsModal) {
+        answers.componentName = generateComponentName(answers.id);
+    }
+    manifest[manifestNodeName] = manifest[manifestNodeName] || [];
+    manifest[manifestNodeName].push(answers);
+};
+
 var exitMenu = false;
 
 const briefOverviews = {
@@ -73,14 +100,7 @@ const promptTopLevelFields = (manifest) => {
         .then((answers) => {
             if (answers.name) {
                 manifest.name = answers.name;
-                manifest.id = slugify(answers.name, {
-                    replacement: '-',  // replace spaces with replacement character, defaults to `-`
-                    remove: undefined, // remove characters that match regex, defaults to `undefined`
-                    lower: true,       // convert to lower case, defaults to `false`
-                    strict: true,      // strip special characters except replacement, defaults to `false`
-                    locale: 'vi',      // language code of the locale to use
-                    trim: true         // trim leading and trailing replacement chars, defaults to `true`
-                });
+                manifest.id = slugify(answers.name, SLUGIFY_CONFIG);
             }
 
             if (answers.description) {
@@ -105,7 +125,7 @@ const promptMainMenu = (manifest) => {
         },
         {
             name: 'Add a button to the header menu',
-            value: nestedHeaderMenuPrompts.bind(this, manifest, 'headerMenuActions'),
+            value: nestedHeaderMenuPrompts.bind(this, manifest, 'headerMenuButtons'),
         },
         {
             name: 'Add server-side handler',
@@ -171,21 +191,7 @@ const nestedActionBarPrompts = (manifest, manifestNodeName) => {
             return basicAnswers;
         })
         .then((answers) => {
-            answers.id = slugify(answers.label, {
-                replacement: '-',  // replace spaces with replacement character, defaults to `-`
-                remove: undefined, // remove characters that match regex, defaults to `undefined`
-                lower: true,       // convert to lower case, defaults to `false`
-                strict: true,      // strip special characters except replacement, defaults to `false`
-                locale: 'vi',      // language code of the locale to use
-                trim: true         // trim leading and trailing replacement chars, defaults to `true`
-            });
-            if (answers.needsModal) {
-                answers.componentName = 'Modal' + answers.id.split('-')
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join('');
-            }
-            manifest[manifestNodeName] = manifest[manifestNodeName] || [];
-            manifest[manifestNodeName].push(answers);
+            processAnswers(answers, manifest, manifestNodeName);
         })
         .catch((error) => {
             console.error(error);
@@ -221,21 +227,7 @@ const nestedHeaderMenuPrompts = (manifest, manifestNodeName) => {
             return basicAnswers;
         })
         .then((answers) => {
-            answers.id = slugify(answers.label, {
-                replacement: '-',  // replace spaces with replacement character, defaults to `-`
-                remove: undefined, // remove characters that match regex, defaults to `undefined`
-                lower: true,       // convert to lower case, defaults to `false`
-                strict: true,      // strip special characters except replacement, defaults to `false`
-                locale: 'vi',      // language code of the locale to use
-                trim: true         // trim leading and trailing replacement chars, defaults to `true`
-            });
-            if (answers.needsModal) {
-                answers.componentName = 'Modal' + answers.id.split('-')
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join('');
-            }
-            manifest[manifestNodeName] = manifest[manifestNodeName] || [];
-            manifest[manifestNodeName].push(answers);
+            processAnswers(answers, manifest, manifestNodeName);
         })
         .catch((error) => {
             console.error(error);

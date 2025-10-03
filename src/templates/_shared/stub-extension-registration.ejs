@@ -67,8 +67,8 @@ function ExtensionRegistration() {
           async getButtons({ context, resourceSelection }) {
             // YOUR HEADER MENU BUTTONS SHOULD BE RETURNED IN THE ARRAY
             return [
-              <%_ if (extensionManifest.headerMenuActions) { -%>
-                <%_ extensionManifest.headerMenuActions.forEach((action) => { -%>
+              <%_ if (extensionManifest.headerMenuButtons) { -%>
+                <%_ extensionManifest.headerMenuButtons.forEach((action) => { -%>
               {
                 'id': '<%- action.id %>',
                 'icon': '<%- action.icon %>',

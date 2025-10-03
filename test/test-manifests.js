@@ -33,7 +33,7 @@ const customExtensionManifest = {
       "label": "Label 2"
     }
   ],
-  "headerMenuActions": [
+  "headerMenuButtons": [
     {
       "id": "h1",
       "icon": "Settings",

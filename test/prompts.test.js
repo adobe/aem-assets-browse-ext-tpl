@@ -301,7 +301,7 @@ describe('prompts', () => {
 
             inquirer.prompt.mockResolvedValue(mockAnswers);
 
-            await nestedHeaderMenuPrompts(mockManifest, 'headerMenuActions');
+            await nestedHeaderMenuPrompts(mockManifest, 'headerMenuButtons');
 
             expect(inquirer.prompt).toHaveBeenCalledWith([
                 expect.objectContaining({
@@ -335,14 +335,14 @@ describe('prompts', () => {
 
             inquirer.prompt.mockResolvedValue(mockAnswers);
 
-            await nestedHeaderMenuPrompts(mockManifest, 'headerMenuActions');
+            await nestedHeaderMenuPrompts(mockManifest, 'headerMenuButtons');
 
-            // Verify it's stored in headerMenuActions, not actionBarActions
-            expect(mockManifest.headerMenuActions).toBeDefined();
-            expect(mockManifest.headerMenuActions).toHaveLength(1);
+            // Verify it's stored in headerMenuButtons, not actionBarActions
+            expect(mockManifest.headerMenuButtons).toBeDefined();
+            expect(mockManifest.headerMenuButtons).toHaveLength(1);
             expect(mockManifest.actionBarActions).toBeUndefined();
             
-            const addedAction = mockManifest.headerMenuActions[0];
+            const addedAction = mockManifest.headerMenuButtons[0];
             expect(addedAction.label).toBe('Test Header Button');
             expect(addedAction.icon).toBe('Help');
             expect(addedAction.id).toBe('test-header-button');

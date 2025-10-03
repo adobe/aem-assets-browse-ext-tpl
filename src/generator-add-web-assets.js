@@ -127,7 +127,7 @@ class ExtensionWebAssetsGenerator extends Generator {
         if (extensionArea === 'actionBar') {
             customActions = this.props.extensionManifest.actionBarActions || [];
         } else if (extensionArea === 'headerMenu') {
-            customActions = this.props.extensionManifest.headerMenuActions || [];
+            customActions = this.props.extensionManifest.headerMenuButtons || [];
         }
 
         customActions.forEach((action) => {

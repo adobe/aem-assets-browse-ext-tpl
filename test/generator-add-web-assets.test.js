@@ -139,9 +139,9 @@ function assertCodeContent(extensionManifest) {
         );
     });
 
-    const headerMenuActions = extensionManifest.headerMenuActions || [];
+    const headerMenuButtons = extensionManifest.headerMenuButtons || [];
 
-    headerMenuActions.forEach((action) => {
+    headerMenuButtons.forEach((action) => {
         assert.fileContent(
             `${webSrcFolder}/src/components/ExtensionRegistration.js`,
             `'id': '${action.id}'`
