@@ -33,9 +33,9 @@ function App() {
               <%_ } -%>
           <%_ })} -%>
           <%_ if (extensionManifest.headerMenuButtons) { -%>
-            <%_ extensionManifest.headerMenuButtons.forEach((action) => { -%>
-              <%_ if (action.needsModal) { -%>
-          <Route path="modal-<%- action.id %>" element={<<%- action.componentName %> />} />
+            <%_ extensionManifest.headerMenuButtons.forEach((button) => { -%>
+              <%_ if (button.needsModal) { -%>
+          <Route path="modal-<%- button.id %>" element={<<%- button.componentName %> />} />
               <%_ } -%>
           <%_ })} -%>
           // YOUR CUSTOM ROUTES SHOULD BE HERE

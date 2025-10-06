@@ -141,22 +141,22 @@ function assertCodeContent(extensionManifest) {
 
     const headerMenuButtons = extensionManifest.headerMenuButtons || [];
 
-    headerMenuButtons.forEach((action) => {
+    headerMenuButtons.forEach((button) => {
         assert.fileContent(
             `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-            `'id': '${action.id}'`
+            `'id': '${button.id}'`
         );
         assert.fileContent(
             `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-            `'icon': '${action.icon}'`
+            `'icon': '${button.icon}'`
         );
         assert.fileContent(
             `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-            `'label': '${action.label}'`
+            `'label': '${button.label}'`
         );
         
-        // Verify modal routes are generated in App.js if action needs modal
-        if (action.needsModal) {
+        // Verify modal routes are generated in App.js if button needs modal
+        if (button.needsModal) {
             assert.fileContent(
                 `${webSrcFolder}/src/components/App.js`,
                 `<Route path="modal-${action.id}" element={<${action.componentName} />} />`
