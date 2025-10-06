@@ -294,7 +294,7 @@ describe('prompts', () => {
         it('should use custom label prompt message for header menu button', async () => {
             const mockManifest = {};
             const mockAnswers = {
-                label: 'Custom Header Action',
+                label: 'Custom Header Button',
                 icon: 'Settings',
                 needsModal: false,
             };
@@ -313,7 +313,7 @@ describe('prompts', () => {
                 expect.objectContaining({
                     type: 'autocomplete',
                     name: 'icon',
-                    message: 'Please select React Spectrum icon for the ActionBar action:',
+                    message: 'Please select React Spectrum icon for the Header Menu button:',
                     source: expect.any(Function),
                 }),
                 expect.objectContaining({

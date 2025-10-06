@@ -159,7 +159,7 @@ function assertCodeContent(extensionManifest) {
         if (button.needsModal) {
             assert.fileContent(
                 `${webSrcFolder}/src/components/App.js`,
-                `<Route path="modal-${action.id}" element={<${action.componentName} />} />`
+                `<Route path="modal-${button.id}" element={<${button.componentName} />} />`
             );
         }
     });

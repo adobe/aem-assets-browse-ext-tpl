@@ -201,7 +201,7 @@ const nestedActionBarPrompts = (manifest, manifestNodeName) => {
 // Prompts for Header Menu metadata
 const nestedHeaderMenuPrompts = (manifest, manifestNodeName) => {
     // First prompt for basic info
-    const basicQuestions = [labelPrompt('Header Menu button'), iconPrompt(), modalPrompt()];
+    const basicQuestions = [labelPrompt('Header Menu button'), iconPrompt('Header Menu button'), modalPrompt()];
 
     return inquirer
         .prompt(basicQuestions)
