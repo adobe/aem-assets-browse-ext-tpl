@@ -53,6 +53,7 @@ class ExtensionWebAssetsGenerator extends Generator {
 
         // Generate React component files for custom actions that needs to show a modal
         this._generateModalFiles('actionBar');
+        this._generateModalFiles('headerMenu');
 
         // add .babelrc
         /// NOTE this is a global file and might conflict
@@ -125,6 +126,8 @@ class ExtensionWebAssetsGenerator extends Generator {
 
         if (extensionArea === 'actionBar') {
             customActions = this.props.extensionManifest.actionBarActions || [];
+        } else if (extensionArea === 'headerMenu') {
+            customActions = this.props.extensionManifest.headerMenuButtons || [];
         }
 
         customActions.forEach((action) => {

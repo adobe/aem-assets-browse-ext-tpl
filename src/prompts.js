@@ -16,6 +16,33 @@ const chalk = require('chalk');
 
 inquirer.registerPrompt('autocomplete', autocompletePrompt);
 
+// Shared slugify configuration
+const SLUGIFY_CONFIG = {
+    replacement: '-',  // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true,       // convert to lower case, defaults to `false`
+    strict: true,      // strip special characters except replacement, defaults to `false`
+    locale: 'vi',      // language code of the locale to use
+    trim: true         // trim leading and trailing replacement chars, defaults to `true`
+};
+
+// Helper function to generate component name from id
+const generateComponentName = (id) => {
+    return 'Modal' + id.split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+};
+
+// Helper function to process answers with common logic
+const processAnswers = (answers, manifest, manifestNodeName) => {
+    answers.id = slugify(answers.label, SLUGIFY_CONFIG);
+    if (answers.needsModal) {
+        answers.componentName = generateComponentName(answers.id);
+    }
+    manifest[manifestNodeName] = manifest[manifestNodeName] || [];
+    manifest[manifestNodeName].push(answers);
+};
+
 var exitMenu = false;
 
 const briefOverviews = {
@@ -73,14 +100,7 @@ const promptTopLevelFields = (manifest) => {
         .then((answers) => {
             if (answers.name) {
                 manifest.name = answers.name;
-                manifest.id = slugify(answers.name, {
-                    replacement: '-',  // replace spaces with replacement character, defaults to `-`
-                    remove: undefined, // remove characters that match regex, defaults to `undefined`
-                    lower: true,       // convert to lower case, defaults to `false`
-                    strict: true,      // strip special characters except replacement, defaults to `false`
-                    locale: 'vi',      // language code of the locale to use
-                    trim: true         // trim leading and trailing replacement chars, defaults to `true`
-                });
+                manifest.id = slugify(answers.name, SLUGIFY_CONFIG);
             }
 
             if (answers.description) {
@@ -102,6 +122,10 @@ const promptMainMenu = (manifest) => {
         {
             name: 'Add an action to the ActionBar',
             value: nestedActionBarPrompts.bind(this, manifest, 'actionBarActions'),
+        },
+        {
+            name: 'Add a button to the header menu',
+            value: nestedHeaderMenuPrompts.bind(this, manifest, 'headerMenuButtons'),
         },
         {
             name: 'Add server-side handler',
@@ -167,21 +191,43 @@ const nestedActionBarPrompts = (manifest, manifestNodeName) => {
             return basicAnswers;
         })
         .then((answers) => {
-            answers.id = slugify(answers.label, {
-                replacement: '-',  // replace spaces with replacement character, defaults to `-`
-                remove: undefined, // remove characters that match regex, defaults to `undefined`
-                lower: true,       // convert to lower case, defaults to `false`
-                strict: true,      // strip special characters except replacement, defaults to `false`
-                locale: 'vi',      // language code of the locale to use
-                trim: true         // trim leading and trailing replacement chars, defaults to `true`
-            });
-            if (answers.needsModal) {
-                answers.componentName = 'Modal' + answers.id.split('-')
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join('');
+            processAnswers(answers, manifest, manifestNodeName);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+}
+
+// Prompts for Header Menu metadata
+const nestedHeaderMenuPrompts = (manifest, manifestNodeName) => {
+    // First prompt for basic info
+    const basicQuestions = [labelPrompt('Header Menu button'), iconPrompt('Header Menu button'), modalPrompt()];
+
+    return inquirer
+        .prompt(basicQuestions)
+        .then((basicAnswers) => {
+            // If modal is needed, prompt for modal details
+            if (basicAnswers.needsModal) {
+                // First get title and type
+                const mandatoryModalQuestions = [
+                    modalTitlePrompt(),
+                    modalTypePrompt()
+                ];
+
+                return inquirer.prompt(mandatoryModalQuestions).then(mandatoryModalAnswers => {
+                    // Only prompt for size if type is 'modal'
+                    if (mandatoryModalAnswers.modalType === 'modal') {
+                        return inquirer.prompt(modalSizePrompt()).then(sizeAnswer => {
+                            return {...basicAnswers, ...mandatoryModalAnswers, ...sizeAnswer};
+                        });
+                    }
+                    return {...basicAnswers, ...mandatoryModalAnswers};
+                });
             }
-            manifest[manifestNodeName] = manifest[manifestNodeName] || [];
-            manifest[manifestNodeName].push(answers);
+            return basicAnswers;
+        })
+        .then((answers) => {
+            processAnswers(answers, manifest, manifestNodeName);
         })
         .catch((error) => {
             console.error(error);
@@ -189,11 +235,11 @@ const nestedActionBarPrompts = (manifest, manifestNodeName) => {
 }
 
 // Helper prompts for ActionBar action metadata
-const labelPrompt = () => {
+const labelPrompt = (uiString = 'ActionBar action') => {
     return {
         type: 'input',
         name: 'label',
-        message: 'Please provide label for the ActionBar action:',
+        message: `Please provide label for the ${uiString}:`,
         validate(answer) {
             if (!answer.length) {
                 return 'Required.';
@@ -318,11 +364,11 @@ const workflowIcons = [
     'WebPage', 'WebPages', 'Workflow', 'WorkflowAdd', 'Wrench', 'ZoomIn', 'ZoomOut'
 ];
 
-const iconPrompt = () => {
+const iconPrompt = (uiString = 'ActionBar action') => {
     return {
         type: 'autocomplete',
         name: 'icon',
-        message: 'Please select React Spectrum icon for the ActionBar action:',
+        message: `Please select React Spectrum icon for the ${uiString}:`,
         source: (answersSoFar, input) => {
             if (input) {
                 return Promise.resolve(workflowIcons.filter(icon => icon.toLowerCase().includes(input.toLowerCase())));
@@ -462,5 +508,6 @@ module.exports = {
     promptTopLevelFields,
     promptMainMenu,
     nestedActionBarPrompts,
+    nestedHeaderMenuPrompts,
     promptDocs
 };

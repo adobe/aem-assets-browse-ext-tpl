@@ -110,6 +110,18 @@ function assertCodeContent(extensionManifest) {
         'quickActions: {'
     );
 
+    // for headerMenu
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'headerMenu: {'
+    );
+
+    // for headerMenu
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async getButtons({ context, resourceSelection }) {'
+    );
+
     const actionBarActions = extensionManifest.actionBarActions || [];
 
     actionBarActions.forEach((action) => {
@@ -125,6 +137,31 @@ function assertCodeContent(extensionManifest) {
             `${webSrcFolder}/src/components/ExtensionRegistration.js`,
             `'label': '${action.label}'`
         );
+    });
+
+    const headerMenuButtons = extensionManifest.headerMenuButtons || [];
+
+    headerMenuButtons.forEach((button) => {
+        assert.fileContent(
+            `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+            `'id': '${button.id}'`
+        );
+        assert.fileContent(
+            `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+            `'icon': '${button.icon}'`
+        );
+        assert.fileContent(
+            `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+            `'label': '${button.label}'`
+        );
+        
+        // Verify modal routes are generated in App.js if button needs modal
+        if (button.needsModal) {
+            assert.fileContent(
+                `${webSrcFolder}/src/components/App.js`,
+                `<Route path="modal-${button.id}" element={<${button.componentName} />} />`
+            );
+        }
     });
 }
 
