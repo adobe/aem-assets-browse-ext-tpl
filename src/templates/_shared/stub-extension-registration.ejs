@@ -75,7 +75,6 @@ function ExtensionRegistration() {
                 'label': '<%- button.label %>',
                 'onClick': async () => {
                 <%_ if (button.needsModal) { -%>
-                  // openDialog: ({ title, contentUrl, type, size, payload }) => {},
                   guestConnection.host.modal.openDialog({
                     title: '<%- button.modalTitle %>',
                     contentUrl: '/#modal-<%- button.id %>',
