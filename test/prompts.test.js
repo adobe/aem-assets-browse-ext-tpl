@@ -325,7 +325,7 @@ describe('prompts', () => {
             ]);
         });
 
-        it('should store header menu actions in correct manifest property', async () => {
+        it('should store header menu buttons in correct manifest property', async () => {
             const mockManifest = {};
             const mockAnswers = {
                 label: 'Test Header Button',
@@ -342,10 +342,10 @@ describe('prompts', () => {
             expect(mockManifest.headerMenuButtons).toHaveLength(1);
             expect(mockManifest.actionBarActions).toBeUndefined();
             
-            const addedAction = mockManifest.headerMenuButtons[0];
-            expect(addedAction.label).toBe('Test Header Button');
-            expect(addedAction.icon).toBe('Help');
-            expect(addedAction.id).toBe('test-header-button');
+            const addedButtons = mockManifest.headerMenuButtons[0];
+            expect(addedButtons.label).toBe('Test Header Button');
+            expect(addedButtons.icon).toBe('Help');
+            expect(addedButtons.id).toBe('test-header-button');
         });
     });
 });
