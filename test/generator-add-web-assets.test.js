@@ -119,19 +119,19 @@ function assertCodeContent(extensionManifest) {
     // for headerMenu
     assert.fileContent(
         `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-        'getButtons({ context, resource }) {'
+        'async getButtons({ context, resource }) {'
     );
 
     // for headerMenu
     assert.fileContent(
         `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-        'getHiddenHeaderButtonIds({ context, resource }) {'
+        'async getHiddenHeaderButtonIds({ context, resource }) {'
     );
 
     // for headerMenu
     assert.fileContent(
         `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-        'overrideHeaderMenuButton({ buttonId, context, resource }) {'
+        'async overrideHeaderMenuButton({ buttonId, context, resource }) {'
     );
 
     const actionBarActions = extensionManifest.actionBarActions || [];
