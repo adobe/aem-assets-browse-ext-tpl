@@ -123,11 +123,11 @@ function assertCodeContent(extensionManifest) {
     );
     assert.fileContent(
         `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-        'getHiddenButtonIds({ context, resource }) {'
+        'async getHiddenButtonIds({ context, resource }) {'
     );
     assert.fileContent(
         `${webSrcFolder}/src/components/ExtensionRegistration.js`,
-        'overrideButton({ buttonId, context, resource }) {'
+        'async overrideButton({ buttonId, context, resource }) {'
     );
 
     const actionBarActions = extensionManifest.actionBarActions || [];
