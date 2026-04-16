@@ -90,6 +90,14 @@ function ExtensionRegistration() {
               <%_ })} -%>
             ];
           },
+          async getHiddenButtonIds({ context, resource }) {
+            return [];
+          },
+          async overrideButton({ buttonId, context, resource }) {
+            // perform some custom tasks
+            // return true to skip built-in handler; return false to use built-in handler
+            return false;
+          },
         },
       },
     });

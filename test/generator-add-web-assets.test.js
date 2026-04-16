@@ -121,6 +121,14 @@ function assertCodeContent(extensionManifest) {
         `${webSrcFolder}/src/components/ExtensionRegistration.js`,
         'async getButtons({ context, resource }) {'
     );
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async getHiddenButtonIds({ context, resource }) {'
+    );
+    assert.fileContent(
+        `${webSrcFolder}/src/components/ExtensionRegistration.js`,
+        'async overrideButton({ buttonId, context, resource }) {'
+    );
 
     const actionBarActions = extensionManifest.actionBarActions || [];
 

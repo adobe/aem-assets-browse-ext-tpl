@@ -1,6 +1,6 @@
 {
   "name": "@adobe/aem-assets-browse-ext-tpl",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "main": "src/index.js",
   "description": "Asset Browse extension template for the AEM Assets View",
   "engines": {
